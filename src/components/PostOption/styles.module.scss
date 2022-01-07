@@ -1,0 +1,48 @@
+.container {
+    h3 {
+        display: inline-block;
+        font-size: 1.75rem;
+        font-style: bold;
+    
+        margin: 0.4rem 0;
+        cursor: pointer;
+
+        color: var(--gray-100);
+
+        transition: color 0.2s;
+        &:hover {
+            color: var(--pink-500)
+        }
+    }
+
+    color: var(--gray-500);
+
+    p {
+        font-size: 1.13rem;   
+    }
+
+    > div {
+        font-size: 0.875rem;
+        
+        margin: 1.25rem 0;
+
+        display: flex;
+        align-items: center;
+
+        .postListIcon {
+            margin-right: 0.25rem;
+        }
+
+        time {
+            margin-right: 1rem;
+
+        }
+
+        
+    }
+
+    & + .container {
+        margin-top: 3rem;
+    }
+
+}
