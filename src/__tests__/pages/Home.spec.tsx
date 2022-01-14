@@ -131,6 +131,8 @@ describe('Home', () => {
 
     render(<App postsPagination={postsPagination} />);
 
+    
+
     screen.getByText('Como utilizar Hooks');
     screen.getByText('Pensando em sincronização em vez de ciclos de vida');
     screen.getByText('15 mar 2021');
@@ -142,6 +144,8 @@ describe('Home', () => {
     );
     screen.getByText('15 mar 2021');
     screen.getByText('Danilo Vieira');
+
+    screen.debug();
   });
 
   it('should be able to navigate to post page after a click', () => {

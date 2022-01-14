@@ -1,1 +1,77 @@
-// TODO
+.container {
+    overflow-x: hidden;
+    img {
+        width: 100%;
+        height: 20rem;
+    }
+
+    .post {
+        max-width: 960px;
+        margin: 1rem auto;
+
+        h1 {
+            color: var(--gray-100);
+            font-size: 3rem;
+            font-weight: 600;
+            margin: 3rem 0 1.5rem 0;
+        }
+
+        .infoBox {
+            margin: 1rem 0 0 0;
+            font-size: 16px;
+            
+            
+            color: var(--gray-500);
+            display: flex;
+            
+            align-items: center;
+            
+            .postListIcon {
+                margin-right: 0.5rem;
+            
+            }
+
+            time {
+                margin-right: 1.5rem;
+            }
+
+            span {
+                margin-right: 1.25rem;
+            }
+
+            
+        }
+
+        h4 {
+            margin: 4rem 0;
+            font-size: 2rem;
+            color: var(--gray-100);
+        }
+
+        .postContent {
+            color: var(--gray-500);
+            font-size: 1.17rem;
+
+            p{
+                text-align: justify;
+                text-justify: inter-word;
+                line-height: 1.75rem;
+            
+        
+            }
+
+            p, ul {
+                margin: 1.5rem 0;
+            }
+        
+            ul, ol {    
+                padding-left: 1.5rem;
+
+
+                li {
+                    margin: 0.5rem 0;
+                }
+            }
+        }
+    }
+}

@@ -1,17 +1,15 @@
 import { GetStaticProps } from 'next';
 
 import { getPrismicClient } from '../services/prismic';
-
-import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import Prismic from '@prismicio/client'
-import { FiCalendar, FiUser } from 'react-icons/fi'
-import { RichText } from 'prismic-dom';
 import PostOption from '../components/PostOption';
 import { useState } from 'react';
+import axios from "axios";
+import { postOptionAdapter } from '../shared/adapters/postOption';
 
 type Post = {
-  slug?: string;
+  uid?: string;
   first_publication_date: string | null;
   data: {
     title: string;
@@ -20,9 +18,17 @@ type Post = {
   };
 }
 
+type PostResponse = {
+  next_page: string;
+  
+  results: Post[]
+  
+}
+
+
 interface PostPagination {
   next_page: string;
-  posts: Post[];
+  results: Post[];
 }
 
 interface HomeProps {
@@ -31,22 +37,43 @@ interface HomeProps {
 
 
 export default function Home( { postsPagination }: HomeProps ) {
-  const [posts, setPosts] = useState<Post[]>(postsPagination.posts)
+  const [posts, setPosts] = useState<Post[]>(postsPagination.results)
+  const [nextPage, setNextPage] = useState<string>(postsPagination.next_page)
+
+
+  async function handleLoadMorePost() {
+    const response = await (await fetch(nextPage)).json() as PostResponse
+
+    setPosts([...posts, ...response.results])
+    setNextPage(response.next_page)
+  }
 
   return (
     <>
       <main className={styles.container}>
         <div className={styles.content}>
-         
-          {posts.map(post =>  (
-            <PostOption key = {post.slug} post={post}/>
-            )
-          )}
           
+        {postsPagination.results ?    
+            
+            <>
+              {posts.map(post => 
+              
+                <PostOption key = {post.uid} post={post}/>
+                
+              )}
+        
+              {nextPage ?    
+                <strong onClick={handleLoadMorePost}>Carregar mais posts</strong>
+                : 
+                null
+              }
+            </>
+
+          : 
+            <h1>Ainda não existem posts publicados no blog.</h1>
+            
+        }
           
-          <strong>Carregar mais posts</strong>
-
-
         </div>
 
       </main>
@@ -67,27 +94,16 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   );
 
-  const posts: Post[] = postsResponse.results.map(post => {
-    return {
-      slug: post.uid,
-      first_publication_date: new Date(post.first_publication_date).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric'
-      }),
-      data: {
-        title: post.data.title,
-        subtitle: post.data.subtitle,
-        author: post.data.author
-      }
-    }
+  const results: Post[] = postsResponse.results.map(post => {
+  
+    return postOptionAdapter(post);
   })
 
   return { 
     props: {
       postsPagination: {
         next_page: postsResponse.next_page,
-        posts,
+        results,
         
       }      
     }
