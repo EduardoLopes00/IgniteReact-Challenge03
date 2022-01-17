@@ -259,6 +259,9 @@ describe('Post', () => {
     screen.getByText(/Nullam dolor sapien/);
     screen.getByText('Cras laoreet mi');
     screen.getByText(/Ut varius quis velit sed cursus/);
+
+    screen.debug();
+
   });
 
   it('should be able to render loading message if fallback', () => {
